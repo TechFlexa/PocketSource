@@ -23,11 +23,11 @@ class PassportController extends Controller
     public function login(){
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
             $user = Auth::user();
-            $success['token'] =  $user->createToken('PocketSource')->accessToken;
-            return response()->json(['success' => $success], $this->successStatus);
+            $data['token'] =  $user->createToken('PocketSource')->accessToken;
+            return response()->json(['success' => true, 'data' => $data], $this->successStatus);
         }
         else{
-            return response()->json(['error'=>'Unauthorised'], 401);
+            return response()->json(['success' => false,'error'=>'Unauthorised'], 401);
         }
     }
 
@@ -40,20 +40,25 @@ class PassportController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required',
             'c_password' => 'required|same:password',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401);
+            return response()->json(['success' => false, 'error'=>$validator->errors()], 401);
         }
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-        $success['token'] =  $user->createToken('PocketSource')->accessToken;
-        $success['name'] =  $user->name;
-        return response()->json(['success'=>$success], $this->successStatus);
+
+        if($user = User::create($input)) {
+            $data['token'] =  $user->createToken('PocketSource')->accessToken;
+            $data['name'] =  $user->name;
+            return response()->json(['success'=> true, 'data' => $data], $this->successStatus);
+        }
+        else {
+            return response()->json(['success' => false,'error'=>'Unable to register. Probably a database error.'], 401);
+        }
     }
 
     /**
