@@ -27,7 +27,7 @@ class PassportController extends Controller
             return response()->json(['success' => true, 'data' => $data], $this->successStatus);
         }
         else{
-            return response()->json(['success' => false,'error'=>'Unauthorised'], 401);
+            return response()->json(['success' => false,'error'=>'Unauthorised']);
         }
     }
 
@@ -46,7 +46,7 @@ class PassportController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'error'=>$validator->errors()], 401);
+            return response()->json(['success' => false, 'error'=>$validator->errors()]);
         }
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
@@ -57,7 +57,7 @@ class PassportController extends Controller
             return response()->json(['success'=> true, 'data' => $data], $this->successStatus);
         }
         else {
-            return response()->json(['success' => false,'error'=>'Unable to register. Probably a database error.'], 401);
+            return response()->json(['success' => false,'error'=>'Unable to register. Probably a database error.']);
         }
     }
 
