@@ -36,7 +36,7 @@ class CommentsController extends Controller
         $comment->user_id = auth()->user()->id;
         $comment->save();
 
-        return response()->json(['success'=>'Comment Successfull!']);
+        return response()->json(['success'=>'Comment Successfull!','comment'=>$comment]);
     }
 
     /**
@@ -80,7 +80,7 @@ class CommentsController extends Controller
         $comment->body = $request->input('body');
         $comment->save();
 
-        return response()->json(['success'=>'Comment Updated!']);
+        return response()->json(['success'=>'Comment Updated!','comment'=>$comment]);
     }
 
     /**
@@ -94,8 +94,9 @@ class CommentsController extends Controller
         $comment = comment::find($id);
         if(auth()->user()->id != $comment->user_id)
         {
-          return response()->json(['error'=>'Unauthorised To Update']);
+          return response()->json(['error'=>'Unauthorised To Delete']);
         }
         $comment->delete();
+        return response()->json(['success'=>'Comment deleted!']);
     }
 }
