@@ -1,0 +1,26 @@
+{
+  "version-0.1-docs": {
+    "Getting Started": [
+      "version-0.1-getting-started",
+      "version-0.1-installation",
+      "version-0.1-running-local-server"
+    ],
+    "Guides": [
+      "version-0.1-add-resource",
+      "version-0.1-edit-resource",
+      "version-0.1-search-resource"
+    ],
+    "API": [
+      "version-0.1-api-introduction",
+      "version-0.1-login-api",
+      "version-0.1-register-api",
+      "version-0.1-retrieve-resources-api"
+    ]
+  },
+  "version-0.1-docs-other": {
+    "First Category": [
+      "version-0.1-doc4",
+      "version-0.1-doc5"
+    ]
+  }
+}

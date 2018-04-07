@@ -1,0 +1,10 @@
+{
+  "docs": {
+    "Getting Started": ["getting-started", "installation", "running-local-server"],
+    "Guides": ["add-resource", "edit-resource", "search-resource"],
+    "API": ["api-introduction", "login-api", "register-api", "retrieve-resources-api"]
+  },
+  "docs-other": {
+    "First Category": ["doc4", "doc5"]
+  }
+}
