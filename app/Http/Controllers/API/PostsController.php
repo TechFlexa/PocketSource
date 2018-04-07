@@ -56,7 +56,7 @@ class PostsController extends Controller
       $newpost->user_id = auth()->user()->id;
       $newpost->save();
 
-      return response()->json(['success'=>'Post Created']);
+      return response()->json(['success'=>'Post Created','post'=>$newpost]);
     }
 
     /**
@@ -107,7 +107,7 @@ class PostsController extends Controller
         $newpost = post::find($id);
         if(auth()->user()->id != $newpost->user_id)
         {
-          return response()->json(['error'=>'Unauthorised To Edit']);
+          return response()->json(['error'=>'Unauthorised To Update']);
         }
 
         $newpost->title = $request->input('title');
@@ -129,7 +129,7 @@ class PostsController extends Controller
       $newpost = post::find($id);
       if(auth()->user()->id != $newpost->user_id)
       {
-        return response()->json(['error'=>'Unauthorised To Edit']);
+        return response()->json(['error'=>'Unauthorised To Delete']);
       }
       $newpost->delete();
       return response()->json(['success'=>'Deleted Successfully!']);
