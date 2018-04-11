@@ -59,7 +59,6 @@ class PostController extends Controller
 
             $content->header('Posts');
             $content->description('Create Post');
-
             $content->body($this->form());
         });
     }
@@ -95,11 +94,11 @@ class PostController extends Controller
             $form->display('id', 'ID');
             $form->text('title', 'Title');
             $form->text('body', 'Body');
-            $form->image('cover', 'Cover');
+            $form->image('cover', 'Cover')->uniqueName();
             $form->text('user_id', 'User ID');
             $form->text('author', 'Author');
             $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->display('updated_at', 'Updated At');            
         });
     }
 }
