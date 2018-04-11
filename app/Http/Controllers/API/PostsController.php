@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Http\Controllers\Controller;
 use App\User;
-use App\post;
+use App\Post;
 use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
@@ -16,10 +16,24 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $Posts = post::all();
-        return response()->json(['Posts'=>$Posts]);
+        $req_posts = Post::all();
+        $posts = [];
+        foreach ($req_posts as $req_post) {
+            $post['id'] = $req_post['id'];
+            $post['title'] = $req_post['title'];
+            $post['body'] = $req_post['body'];
+            $post['cover'] = $request->getSchemeAndHttpHost().'/storage/'.$req_post['cover'];
+            $post['user_id'] = $req_post['user_id'];
+            $post['author'] = $req_post['author'];
+            $post['created_at'] = $req_post['created_at'];
+            $post['updated_at'] = $req_post['updated_at'];
+            array_push($posts, $post);
+            $post = [];
+        }
+
+        return response()->json(["success"=> true,'data'=>$posts]);
     }
 
     /**
@@ -56,7 +70,7 @@ class PostsController extends Controller
       $newpost->user_id = auth()->user()->id;
       $newpost->save();
 
-      return response()->json(['success'=>'Post Created','post'=>$newpost]);
+      return response()->json(['success'=>true,'data'=>$newpost]);
     }
 
     /**
@@ -67,9 +81,9 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        $Post = post::find($id);
+        $Post = Post::find($id);
         $comment = $Post->comments;
-        return response()->json(['Post'=>$Post]);
+        return response()->json(["success" => true,'data'=>$Post]);
     }
 
     /**
@@ -80,13 +94,13 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        $post = post::find($id);
+        $post = Post::find($id);
         if(auth()->user()->id != $post->user_id)
         {
           return response()->json(['error'=>'Unauthorised To Edit']);
         }
         else
-          return response()->json(['Post'=>$post]);
+          return response()->json(['data'=>$post]);
     }
 
     /**
@@ -104,7 +118,7 @@ class PostsController extends Controller
           'cover' => 'required',
         ]);
 
-        $newpost = post::find($id);
+        $newpost = Post::find($id);
         if(auth()->user()->id != $newpost->user_id)
         {
           return response()->json(['error'=>'Unauthorised To Update']);
@@ -115,7 +129,7 @@ class PostsController extends Controller
         $newpost->cover = $request->input('cover');
         $newpost->save();
 
-        return response()->json(['success'=>'Post Updated!','Post'=>$newpost]);
+        return response()->json(['success'=>'Post Updated!','data'=>$newpost]);
     }
 
     /**
@@ -126,7 +140,7 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-      $newpost = post::find($id);
+      $newpost = Post::find($id);
       if(auth()->user()->id != $newpost->user_id)
       {
         return response()->json(['error'=>'Unauthorised To Delete']);
