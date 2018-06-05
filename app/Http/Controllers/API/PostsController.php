@@ -77,7 +77,7 @@ class PostsController extends Controller
       $newpost = new post;
       $newpost->title = $request->input('title');
       $newpost->body = $request->input('body');
-      $newpost->cover = '/storage'.'/cover_images'.'/'.$fileNameStore;
+      $newpost->cover = $fileNameStore;
       $newpost->author = auth()->user()->name;
       $newpost->user_id = auth()->user()->id;
       $newpost->save();
